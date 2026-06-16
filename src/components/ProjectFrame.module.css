@@ -1,0 +1,291 @@
+.section {
+  padding: 3rem 2.5rem 2rem;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.labelText {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  white-space: nowrap;
+}
+
+.labelLine {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Project list ── */
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+/* ── Project row ── */
+.projectRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  min-height: 340px;
+}
+
+.projectRowFlip {
+  direction: rtl;
+}
+.projectRowFlip > * {
+  direction: ltr;
+}
+
+/* ── Text side ── */
+.textSide {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.projectMeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.projectIndex {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--mint);
+}
+
+.projectYear {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--border);
+}
+
+.projectTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  line-height: 1.1;
+}
+
+.projectTags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+}
+
+.projectDesc {
+  font-size: 0.72rem;
+  line-height: 1.9;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  white-space: pre-line;
+}
+
+.projectLink {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mint);
+  transition: opacity 0.2s;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  text-decoration: none;
+}
+
+.projectLink:hover {
+  opacity: 0.7;
+}
+
+/* ── Image side ── */
+.imageSide {
+  position: relative;
+  padding: 2rem 0;
+}
+
+/* ── Corner detail ── */
+.cornerDetail {
+  position: absolute;
+  top: -20px;
+  left: -70px;
+  width: 12000px;
+  height: 2000px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Map frame ── */
+.mapFrame {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: var(--deep);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 229, 160, 0.15);
+  z-index: 2;
+}
+
+.mapBg {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+/* ── Screenshot carousel ── */
+.screenshotTrack {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.screenshot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.screenshotActive {
+  opacity: 1;
+}
+
+.slideBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(0, 229, 160, 0.25);
+  color: var(--mint);
+  font-size: 1.1rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.slideBtn:hover {
+  background: rgba(0, 229, 160, 0.12);
+  border-color: rgba(0, 229, 160, 0.6);
+}
+
+.slideBtnPrev { left: 0.75rem; }
+.slideBtnNext { right: 0.75rem; }
+
+.slideDots {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  z-index: 5;
+}
+
+.slideDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.slideDotActive {
+  background: var(--mint);
+}
+
+/* ── Frame labels ── */
+.coordLabel {
+  position: absolute;
+  bottom: 1rem;
+  right: 5rem;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.2);
+  z-index: 4;
+}
+
+.viewBtn {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mint);
+  border: 1px solid rgba(0, 229, 160, 0.3);
+  padding: 0.3rem 0.7rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(0, 229, 160, 0.04);
+  text-decoration: none;
+  z-index: 4;
+}
+
+.viewBtn:hover {
+  background: rgba(0, 229, 160, 0.12);
+  border-color: rgba(0, 229, 160, 0.6);
+}
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .section {
+    padding: 2rem 1.25rem;
+  }
+
+  .projectList {
+    gap: 3.5rem;
+  }
+
+  .projectRow {
+    grid-template-columns: 1fr;
+  }
+
+  .projectRowFlip {
+    direction: ltr;
+  }
+
+  .mapFrame {
+    height: 240px;
+  }
+
+  .cornerDetail {
+    display: none;
+  }
+}

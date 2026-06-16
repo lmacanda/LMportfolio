@@ -1,0 +1,110 @@
+.section {
+  padding: 1rem 2.5rem 3.5rem;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.labelLine {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.labelText {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  white-space: nowrap;
+}
+
+/* ── Stack grid ── */
+.stackGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.stackItem {
+  position: relative;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: default;
+  transition: color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+
+.stackItem.hovered {
+  color: var(--dark);
+  border-color: rgba(196, 86, 122, 0.4);
+}
+
+.cursorDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #C4567A;
+  flex-shrink: 0;
+  animation: popIn 0.15s ease-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Certs ── */
+.certRow {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.cert {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.certDot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  flex-shrink: 0;
+}
+
+.certDot.wip {
+  background: transparent;
+  border: 1px solid var(--mint);
+}
+
+@media (max-width: 640px) {
+  .stackGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .certRow {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}

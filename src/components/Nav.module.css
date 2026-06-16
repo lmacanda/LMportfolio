@@ -1,0 +1,54 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 2.5rem;
+  background: rgba(244, 246, 241, 0.92);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: var(--dark);
+}
+
+.langToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+}
+
+.lang {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.lang:hover {
+  color: var(--dark);
+}
+
+.lang.active {
+  color: var(--dark);
+}
+
+.sep {
+  color: var(--border);
+}
