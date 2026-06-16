@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import styles from './Nav.module.css'
-
-type Lang = 'EN' | 'PT'
+import { useLang } from '../context/LangContext'
 
 export default function Nav() {
-  const [lang, setLang] = useState<Lang>('EN')
+  const { lang, setLang } = useLang()
 
   return (
     <nav className={styles.nav}>

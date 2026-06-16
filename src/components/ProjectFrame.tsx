@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './ProjectFrame.module.css'
+import { useLang } from '../context/LangContext'
 
 interface Dot { x: number; y: number; vx: number; vy: number; r: number; o: number; color: string }
 
@@ -136,7 +137,10 @@ const PROJECTS = [
     year: '2024',
     index: '01',
     tags: ['Next.js', 'Mapbox GL', 'Supabase', 'TypeScript'],
-    description: 'Geospatial editorial platform mapping natural wine bars and producers in Lisbon. Custom dark map style, audio interviews, category filtering and a bilingual interface.\n\nThe owner manages the map independently — adding pins, uploading audio and images — through a protected admin panel.',
+    description: {
+      EN: 'Geospatial editorial platform mapping natural wine bars and producers in Lisbon. Custom dark map style, audio interviews, category filtering and a bilingual interface.\n\nThe owner manages the map independently — adding pins, uploading audio and images — through a protected admin panel.',
+      PT: 'Plataforma editorial geoespacial que mapeia adegas naturais e produtores em Lisboa. Estilo de mapa escuro personalizado, entrevistas em áudio, filtragem por categoria e interface bilingue.\n\nO proprietário gere o mapa de forma autónoma — adicionando pins, carregando áudio e imagens — através de um painel de administração protegido.',
+    },
     url: 'https://vinho-map.vercel.app',
     inProgress: false,
     coords: "38°43'N · 9°08'W",
@@ -151,7 +155,10 @@ const PROJECTS = [
     year: '2025',
     index: '02',
     tags: ['Next.js 16', 'Sanity CMS', 'TypeScript', 'Vercel'],
-    description: 'Editorial website for a Lisbon-based urban research association. Custom Sanity schema, bilingual content (PT/EN), embedded Studio, and fully responsive layout.\n\nBuilt for editors, not developers — content is managed entirely through Sanity without touching code. Currently in active development for the client.',
+    description: {
+      EN: 'Editorial website for a Lisbon-based urban research association. Custom Sanity schema, bilingual content (PT/EN), embedded Studio, and fully responsive layout.\n\nBuilt for editors, not developers — content is managed entirely through Sanity without touching code. Currently in active development for the client.',
+      PT: 'Website editorial para uma associação de investigação urbana com sede em Lisboa. Schema Sanity personalizado, conteúdo bilingue (PT/EN), Studio incorporado e layout totalmente responsivo.\n\nConstruído para editores, não para programadores — o conteúdo é gerido inteiramente através do Sanity sem tocar no código. Atualmente em desenvolvimento ativo para o cliente.',
+    },
     url: 'https://base-pelo-comum.vercel.app/',
     inProgress: true,
     coords: "38°43'N · 9°08'W",
@@ -169,11 +176,11 @@ interface ProjectRowProps {
 
 function ProjectRow({ project, flip = false }: ProjectRowProps) {
   const [slide, setSlide] = useState(0)
+  const { lang } = useLang()
   const images = project.images
 
   return (
     <div className={`${styles.projectRow} ${flip ? styles.projectRowFlip : ''}`}>
-      {/* ── Text side ── */}
       <div className={styles.textSide}>
         <div className={styles.projectMeta}>
           <span className={styles.projectIndex}>{project.index}</span>
@@ -183,7 +190,7 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
         <div className={styles.projectTags}>
           {project.tags.map(t => <span key={t} className={styles.tag}>{t}</span>)}
         </div>
-        <p className={styles.projectDesc}>{project.description}</p>
+        <p className={styles.projectDesc}>{project.description[lang]}</p>
 
         <a
           href={project.url}
@@ -191,11 +198,10 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
           rel="noopener noreferrer"
           className={styles.projectLink}
         >
-          View live →
+          {lang === 'EN' ? 'View live →' : 'Ver projeto →'}
         </a>
       </div>
 
-      {/* ── Image side ── */}
       <div className={styles.imageSide}>
         <CornerDetail />
 
@@ -241,7 +247,7 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
 
           {project.inProgress && (
             <span className={styles.viewBtn} style={{ opacity: 0.35, cursor: 'default' }}>
-              In progress
+              {lang === 'EN' ? 'In progress' : 'Em desenvolvimento'}
             </span>
           )}
         </div>
@@ -251,10 +257,14 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
 }
 
 export default function ProjectFrame() {
+  const { lang } = useLang()
+
   return (
     <section className={styles.section}>
       <div className={styles.sectionLabel}>
-        <span className={styles.labelText}>Projects</span>
+        <span className={styles.labelText}>
+          {lang === 'EN' ? 'Projects' : 'Projetos'}
+        </span>
         <div className={styles.labelLine} />
       </div>
 
