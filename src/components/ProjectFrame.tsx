@@ -141,8 +141,8 @@ const PROJECTS = [
     inProgress: false,
     coords: "38°43'N · 9°08'W",
     images: [
-      'src/images/VinhoMap1.jpg',
-      'src/images/VinhoMap2.jpg',
+      '/images/VinhoMap1.jpg',
+      '/images/VinhoMap2.jpg',
     ],
   },
   {
@@ -156,8 +156,8 @@ const PROJECTS = [
     inProgress: true,
     coords: "38°43'N · 9°08'W",
     images: [
-      'src/images/BPC1.jpg',
-      'src/images/BPC2.jpg',
+      '/images/BPC1.jpg',
+      '/images/BPC2.jpg',
     ],
   },
 ]
