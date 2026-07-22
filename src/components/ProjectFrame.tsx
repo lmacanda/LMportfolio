@@ -165,6 +165,7 @@ const PROJECTS = [
     images: [
       '/images/BPC1.jpg',
       '/images/BPC2.jpg',
+      '/images/BPC3.jpg',
     ],
   },
 ]
@@ -178,6 +179,19 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
   const [slide, setSlide] = useState(0)
   const { lang } = useLang()
   const images = project.images
+
+  const handleFrameClick = () => {
+    if (!project.url) return
+    window.open(project.url, '_blank', 'noopener,noreferrer')
+  }
+
+  const handleFrameKeyDown = (e: React.KeyboardEvent) => {
+    if (!project.url) return
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      window.open(project.url, '_blank', 'noopener,noreferrer')
+    }
+  }
 
   return (
     <div className={`${styles.projectRow} ${flip ? styles.projectRowFlip : ''}`}>
@@ -205,7 +219,15 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
       <div className={styles.imageSide}>
         <CornerDetail />
 
-        <div className={styles.mapFrame}>
+        <div
+          className={styles.mapFrame}
+          onClick={handleFrameClick}
+          onKeyDown={handleFrameKeyDown}
+          role={project.url ? 'link' : undefined}
+          tabIndex={project.url ? 0 : undefined}
+          aria-label={project.url ? `${project.label} — ${lang === 'EN' ? 'view live' : 'ver projeto'}` : undefined}
+          style={{ cursor: project.url ? 'pointer' : 'default' }}
+        >
           <div className={styles.screenshotTrack}>
             {images.map((src, i) => (
               <img
@@ -221,21 +243,30 @@ function ProjectRow({ project, flip = false }: ProjectRowProps) {
             <>
               <button
                 className={`${styles.slideBtn} ${styles.slideBtnPrev}`}
-                onClick={() => setSlide(s => (s - 1 + images.length) % images.length)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSlide(s => (s - 1 + images.length) % images.length)
+                }}
                 aria-label="Previous screenshot"
               >‹</button>
               <button
                 className={`${styles.slideBtn} ${styles.slideBtnNext}`}
-                onClick={() => setSlide(s => (s + 1) % images.length)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSlide(s => (s + 1) % images.length)
+                }}
                 aria-label="Next screenshot"
               >›</button>
 
-              <div className={styles.slideDots}>
+              <div className={styles.slideDots} onClick={(e) => e.stopPropagation()}>
                 {images.map((_, i) => (
                   <button
                     key={i}
                     className={`${styles.slideDot} ${i === slide ? styles.slideDotActive : ''}`}
-                    onClick={() => setSlide(i)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSlide(i)
+                    }}
                     aria-label={`Go to screenshot ${i + 1}`}
                   />
                 ))}
