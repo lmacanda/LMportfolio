@@ -5,6 +5,7 @@ const STACK = [
   'React', 'TypeScript', 'Next.js',
   'Mapbox GL', 'Three.js', 'Supabase',
   'OpenAI API', 'Python', 'Git',
+  'Data Visualization', 'Recharts', 'Cheerio',
 ]
 
 const CERTS = [
