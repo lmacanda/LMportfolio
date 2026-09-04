@@ -136,88 +136,111 @@ interface ProjectImageProps {
 }
 
 export default function ProjectImage({ project }: ProjectImageProps) {
-  const [slide, setSlide] = useState(0)
   const { lang } = useLang()
   const images = project.images
+  const [index, setIndex] = useState(0)
+  const hasMultiple = images.length > 1
 
-  const handleFrameClick = () => {
+  const handleClick = () => {
     if (!project.url) return
     window.open(project.url, '_blank', 'noopener,noreferrer')
   }
 
-  const handleFrameKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!project.url) return
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      window.open(project.url, '_blank', 'noopener,noreferrer')
+      handleClick()
     }
   }
 
- 
+  const goPrev = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setIndex(i => (i - 1 + images.length) % images.length)
+  }
+
+  const goNext = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setIndex(i => (i + 1) % images.length)
+  }
+
+  const goTo = (e: React.MouseEvent, i: number) => {
+    e.stopPropagation()
+    setIndex(i)
+  }
 
   return (
     <div className={styles.imageSide}>
-       <CornerDetail />
+      <CornerDetail />
 
       <div
-        className={styles.mapFrame}
-        onClick={handleFrameClick}
-        onKeyDown={handleFrameKeyDown}
+        className={styles.carousel}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
         role={project.url ? 'link' : undefined}
         tabIndex={project.url ? 0 : undefined}
         aria-label={project.url ? `${project.label} — ${lang === 'EN' ? 'view live' : 'ver projeto'}` : undefined}
         style={{ cursor: project.url ? 'pointer' : 'default' }}
       >
-        <div className={styles.screenshotTrack}>
-          {images.map((src, i) => (
-            <img
+        {images.map((src, i) => {
+          const isActive = i === index
+          return (
+            <div
               key={src}
-              src={src}
-              alt={`${project.label} screenshot ${i + 1}`}
-              className={`${styles.screenshot} ${i === slide ? styles.screenshotActive : ''}`}
-            />
-          ))}
-        </div>
+              className={`${styles.carouselSlide} ${isActive ? styles.carouselSlideActive : ''}`}
+              aria-hidden={!isActive}
+            >
+              <img
+                src={src}
+                alt={`${project.label} screenshot ${i + 1}`}
+                className={styles.carouselImg}
+              />
+            </div>
+          )
+        })}
 
-        {images.length > 1 && (
+        {hasMultiple && (
           <>
             <button
-              className={`${styles.slideBtn} ${styles.slideBtnPrev}`}
-              onClick={(e) => {
-                e.stopPropagation()
-                setSlide(s => (s - 1 + images.length) % images.length)
-              }}
-              aria-label="Previous screenshot"
-            >‹</button>
+              type="button"
+              className={`${styles.carouselArrow} ${styles.arrowPrev}`}
+              onClick={goPrev}
+              aria-label={lang === 'EN' ? 'Previous image' : 'Imagem anterior'}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
             <button
-              className={`${styles.slideBtn} ${styles.slideBtnNext}`}
-              onClick={(e) => {
-                e.stopPropagation()
-                setSlide(s => (s + 1) % images.length)
-              }}
-              aria-label="Next screenshot"
-            >›</button>
+              type="button"
+              className={`${styles.carouselArrow} ${styles.arrowNext}`}
+              onClick={goNext}
+              aria-label={lang === 'EN' ? 'Next image' : 'Próxima imagem'}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
 
-            <div className={styles.slideDots} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.carouselDots}>
               {images.map((_, i) => (
                 <button
                   key={i}
-                  className={`${styles.slideDot} ${i === slide ? styles.slideDotActive : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setSlide(i)
-                  }}
-                  aria-label={`Go to screenshot ${i + 1}`}
+                  type="button"
+                  className={`${styles.dot} ${i === index ? styles.dotActive : ''}`}
+                  onClick={(e) => goTo(e, i)}
+                  aria-label={`${lang === 'EN' ? 'Go to image' : 'Ir para imagem'} ${i + 1}`}
                 />
               ))}
             </div>
           </>
         )}
+      </div>
 
-        <div className={styles.coordLabel}>{project.coords}</div>
-
+      <div className={styles.stackFooter}>
+        <span className={styles.coordLabel}>{project.coords}</span>
         {project.inProgress && (
-          <span className={styles.viewBtn} style={{ opacity: 0.35, cursor: 'default' }}>
+          <span className={styles.viewBtn} style={{ opacity: 0.6, cursor: 'default' }}>
             {lang === 'EN' ? 'In progress' : 'Em desenvolvimento'}
           </span>
         )}
