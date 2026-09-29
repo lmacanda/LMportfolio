@@ -190,7 +190,7 @@
   height: 30px;
   border-radius: 50%;
   border: 1px solid rgba(0, 229, 160, 0.35);
-  background: rgba(0, 0, 0, 0.35);
+  background: transparent;
   color: var(--mint);
   font-size: 1.1rem;
   line-height: 1;
@@ -336,7 +336,6 @@
     width: 24px;
     height: 24px;
     font-size: 0.9rem;
-    background: rgba(0, 0, 0, 0.45);
   }
 
   .arrowPrev {
