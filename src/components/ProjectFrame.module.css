@@ -145,6 +145,7 @@
   overflow: hidden;
   border: 1px solid rgba(0, 229, 160, 0.15);
   background: transparent;
+  touch-action: pan-y; /* let vertical page scroll through; horizontal drag is handled by JS as a swipe */
 }
 
 .carouselSlide {
