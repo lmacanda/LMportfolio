@@ -145,6 +145,7 @@
   overflow: hidden;
   border: 1px solid rgba(0, 229, 160, 0.15);
   background: transparent;
+  touch-action: pan-y;
 }
 
 .carouselSlide {
@@ -330,12 +331,7 @@
      to the dots instead — a fixed, predictable spot regardless of image
      height. Always opaque too, since :hover doesn't fire reliably on touch. */
   .carouselArrow {
-    top: auto;
-    bottom: 0.6rem;
-    transform: none;
-    width: 24px;
-    height: 24px;
-    font-size: 0.9rem;
+    display: none;
   }
 
   .arrowPrev {

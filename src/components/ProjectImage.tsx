@@ -131,6 +131,9 @@ function CornerDetail() {
   )
 }
 
+/* Minimum horizontal travel (px) before a touch counts as a swipe. */
+const SWIPE_THRESHOLD = 40
+
 interface ProjectImageProps {
   project: Project
 }
@@ -141,12 +144,26 @@ export default function ProjectImage({ project }: ProjectImageProps) {
   const [index, setIndex] = useState(0)
   const hasMultiple = images.length > 1
 
+  // Swipe tracking
+  const touchStart = useRef<{ x: number; y: number } | null>(null)
+  const didSwipe = useRef(false)
+
+  const prev = () => setIndex(i => (i - 1 + images.length) % images.length)
+  const next = () => setIndex(i => (i + 1) % images.length)
+
   const handleClick = () => {
+    // A swipe must never be treated as a tap that opens the project.
+    if (didSwipe.current) {
+      didSwipe.current = false
+      return
+    }
     if (!project.url) return
     window.open(project.url, '_blank', 'noopener,noreferrer')
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (hasMultiple && e.key === 'ArrowLeft') { e.preventDefault(); prev(); return }
+    if (hasMultiple && e.key === 'ArrowRight') { e.preventDefault(); next(); return }
     if (!project.url) return
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -154,14 +171,36 @@ export default function ProjectImage({ project }: ProjectImageProps) {
     }
   }
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!hasMultiple) return
+    const t = e.touches[0]
+    touchStart.current = { x: t.clientX, y: t.clientY }
+    didSwipe.current = false
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!hasMultiple || !touchStart.current) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - touchStart.current.x
+    const dy = t.clientY - touchStart.current.y
+    touchStart.current = null
+
+    // Only horizontal gestures count; vertical ones are page scrolls.
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+
+    didSwipe.current = true
+    if (dx < 0) next()
+    else prev()
+  }
+
   const goPrev = (e: React.MouseEvent) => {
     e.stopPropagation()
-    setIndex(i => (i - 1 + images.length) % images.length)
+    prev()
   }
 
   const goNext = (e: React.MouseEvent) => {
     e.stopPropagation()
-    setIndex(i => (i + 1) % images.length)
+    next()
   }
 
   const goTo = (e: React.MouseEvent, i: number) => {
@@ -177,6 +216,8 @@ export default function ProjectImage({ project }: ProjectImageProps) {
         className={styles.carousel}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         role={project.url ? 'link' : undefined}
         tabIndex={project.url ? 0 : undefined}
         aria-label={project.url ? `${project.label} — ${lang === 'EN' ? 'view live' : 'ver projeto'}` : undefined}
@@ -194,6 +235,7 @@ export default function ProjectImage({ project }: ProjectImageProps) {
                 src={src}
                 alt={`${project.label} screenshot ${i + 1}`}
                 className={styles.carouselImg}
+                draggable={false}
               />
             </div>
           )
