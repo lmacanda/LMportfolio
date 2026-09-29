@@ -325,9 +325,25 @@
     border-radius: 6px;
   }
 
+  /* Arrows: on a tall, dynamically-sized image, vertical-center can land
+     anywhere and end up over content. Pin them to the bottom corners next
+     to the dots instead — a fixed, predictable spot regardless of image
+     height. Always opaque too, since :hover doesn't fire reliably on touch. */
   .carouselArrow {
-    width: 26px;
-    height: 26px;
-    font-size: 1rem;
+    top: auto;
+    bottom: 0.6rem;
+    transform: none;
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .arrowPrev {
+    left: 0.5rem;
+  }
+
+  .arrowNext {
+    right: 0.5rem;
   }
 }
