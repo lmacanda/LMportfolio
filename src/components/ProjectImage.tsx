@@ -141,43 +141,7 @@ export default function ProjectImage({ project }: ProjectImageProps) {
   const [index, setIndex] = useState(0)
   const hasMultiple = images.length > 1
 
-  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
-  const wasSwipeRef = useRef(false)
-
-  const SWIPE_THRESHOLD = 40 // px of horizontal travel before it counts as a swipe
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!hasMultiple) return
-    const t = e.touches[0]
-    touchStartRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!hasMultiple || !touchStartRef.current) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - touchStartRef.current.x
-    const dy = t.clientY - touchStartRef.current.y
-    touchStartRef.current = null
-
-    // Only treat it as a swipe if the movement is mostly horizontal —
-    // otherwise let a vertical drag scroll the page as normal.
-    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
-      wasSwipeRef.current = true
-      if (dx < 0) {
-        setIndex(i => (i + 1) % images.length)
-      } else {
-        setIndex(i => (i - 1 + images.length) % images.length)
-      }
-    }
-  }
-
   const handleClick = () => {
-    // A touchend fires a synthetic click right after it — swallow that one
-    // click so swiping doesn't also open the live site link.
-    if (wasSwipeRef.current) {
-      wasSwipeRef.current = false
-      return
-    }
     if (!project.url) return
     window.open(project.url, '_blank', 'noopener,noreferrer')
   }
@@ -213,27 +177,27 @@ export default function ProjectImage({ project }: ProjectImageProps) {
         className={styles.carousel}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
         role={project.url ? 'link' : undefined}
         tabIndex={project.url ? 0 : undefined}
         aria-label={project.url ? `${project.label} — ${lang === 'EN' ? 'view live' : 'ver projeto'}` : undefined}
         style={{ cursor: project.url ? 'pointer' : 'default' }}
       >
-        <div
-          className={styles.carouselTrack}
-          style={{ transform: `translateX(-${index * 100}%)` }}
-        >
-          {images.map((src, i) => (
-            <div key={src} className={styles.carouselSlide}>
+        {images.map((src, i) => {
+          const isActive = i === index
+          return (
+            <div
+              key={src}
+              className={`${styles.carouselSlide} ${isActive ? styles.carouselSlideActive : ''}`}
+              aria-hidden={!isActive}
+            >
               <img
                 src={src}
                 alt={`${project.label} screenshot ${i + 1}`}
                 className={styles.carouselImg}
               />
             </div>
-          ))}
-        </div>
+          )
+        })}
 
         {hasMultiple && (
           <>
